@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styling.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+        
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            display: grid;
+            place-items: center;
+            height: 100vh;
+            background-color: #7E56F4;
+        }
+
+        .logo {
+            background-color: rgb(101, 101, 101);
+            padding: 10px 0;
+        }
+
+        .container {
+            width: 350px;
+            height: 500px;
+            text-align: center;
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .set {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        input {
+            width: 250px;
+            height: 30px;
+            padding: 5px;
+        }
+
+        button {
+            margin: 20px 0;
+            width: 200px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .dis {
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <section>
+            <div class="container">
+                <div class="logo">
+                    <h1 style="color: white; font-size: 2rem; font-family: poppins;">Age Calculator</h1>
+                </div>
+                <div class="set dob">
+                    <label for="">Enter Date of Birth</label>
+                    <input type="date" id="inputDob" value="2000-01-01">
+                </div>
+                <div class="set current">
+                    <label for="">Current Date</label>
+                    <input type="date" id="cdate" value="">
+                </div>
+                <button onclick="getDOB()">Calculate</button>
+                <div class="dis" id="currentAge">
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", currentDate);
+
+        function getDOB() {
+            let data = document.getElementById("inputDob").value;
+            let dob = new Date(data);
+            let day = dob.getDate();
+            let month = dob.getMonth();
+            let year = dob.getFullYear();
+
+            let now = new Date(document.getElementById("cdate").value);
+            let yearDiff = now.getFullYear() - year;
+            let monthDiff = now.getMonth() - month;
+            let dateDiff = now.getDate() - day;
+
+            if (monthDiff < 0 || (monthDiff === 0 && dateDiff < 0)) {
+                yearDiff--;
+                monthDiff = (monthDiff + 12) % 12;
+            }
+            if (dateDiff < 0) {
+                dateDiff += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                monthDiff--;
+            }
+
+            if (yearDiff < 0) {
+                document.getElementById("currentAge").innerHTML = "Invalid Date";
+            } else {
+                document.getElementById("currentAge").innerHTML =
+                    `Your current Age is ${yearDiff} years, ${monthDiff} months, and ${dateDiff} days`;
+            }
+        }
+
+        function currentDate() {
+            let d = document.getElementById("cdate");
+            d.value = formatted();
+        }
+
+        function formatted(date = new Date()) {
+            return [
+                date.getFullYear(),
+                short(date.getMonth() + 1),
+                short(date.getDate())
+            ].join("-");
+        }
+
+        function short(num) {
+            return num.toString().padStart(2, "0");
+        }
+    </script>
+</body>
+
+</html>
